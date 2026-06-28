@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="6月27日 AI 工作流实战与系统搭建研讨会可视化总结，包含五层模型、内容复利、Skill 搭建地图与落地执行方案。">
+  <title>AI 工作流实战与系统搭建研讨会 | 6月27日可视化总结</title>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Microsoft YaHei', 'PingFang SC', 'sans-serif']
+          },
+          colors: {
+            ink: '#0f172a',
+            mist: '#f8fafc',
+            line: '#e2e8f0',
+            brand: '#5b5ff0'
+          },
+          boxShadow: {
+            linear: '0 24px 80px rgba(15, 23, 42, 0.10)'
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .fade-in.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .mesh {
+      background:
+        radial-gradient(circle at 20% 10%, rgba(91, 95, 240, .18), transparent 28%),
+        radial-gradient(circle at 80% 0%, rgba(20, 184, 166, .14), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(244, 114, 182, .12), transparent 30%);
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-900 antialiased transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+  <header class="mesh relative overflow-hidden border-b border-slate-200/70 bg-white/80 dark:border-slate-800 dark:bg-slate-950">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+      <a href="#top" class="flex items-center gap-3 font-semibold tracking-tight">
+        <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+          <i class="fa-solid fa-layer-group text-sm"></i>
+        </span>
+        <span>AI 工作流 6.27</span>
+      </a>
+      <div class="hidden items-center gap-6 text-sm text-slate-600 dark:text-slate-300 md:flex">
+        <a class="hover:text-brand" href="#model">五层模型</a>
+        <a class="hover:text-brand" href="#compound">内容复利</a>
+        <a class="hover:text-brand" href="#skills">Skill 地图</a>
+        <a class="hover:text-brand" href="#action">落地方案</a>
+      </div>
+      <button id="themeToggle" class="rounded-full border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm transition hover:scale-105 hover:border-brand hover:text-brand dark:border-slate-800 dark:bg-slate-900" aria-label="切换深色浅色模式">
+        <i class="fa-solid fa-circle-half-stroke"></i>
+      </button>
+    </nav>
+
+    <section id="top" class="mx-auto grid max-w-7xl gap-10 px-5 py-16 sm:px-8 lg:grid-cols-[1.1fr_.9fr] lg:py-24">
+      <div class="fade-in">
+        <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/70 px-4 py-2 text-sm text-slate-600 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
+          <i class="fa-regular fa-calendar-check text-brand"></i>
+          2026年6月27日课程可视化总结
+        </p>
+        <h1 class="max-w-4xl text-4xl font-semibold leading-tight tracking-tight sm:text-6xl lg:text-7xl">
+          从使用 AI 工具，到搭建可复利的工作流资产
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+          这场研讨会的核心不是追逐工具，而是把重复任务、业务判断、内容生产和审核标准，沉淀成可运行、可检查、可升级的系统。
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="#action" class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:scale-[1.02] hover:bg-brand dark:bg-white dark:text-slate-950">
+            <i class="fa-solid fa-route"></i>
+            查看落地路线
+          </a>
+          <a href="#skills" class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:scale-[1.02] hover:border-brand hover:text-brand dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
+            <i class="fa-solid fa-puzzle-piece"></i>
+            查看 Skill 地图
+          </a>
+        </div>
+      </div>
+      <div class="fade-in rounded-3xl border border-slate-200 bg-white/80 p-4 shadow-linear backdrop-blur dark:border-slate-800 dark:bg-slate-900/80">
+        <img src="assets/factory-hero.jpg" alt="内容复利工厂现场分享" class="h-full min-h-[340px] w-full rounded-2xl object-cover" loading="eager">
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="fade-in rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:border-brand hover:shadow-linear dark:border-slate-800 dark:bg-slate-900">
+          <i class="fa-solid fa-stairs mb-5 text-2xl text-brand"></i>
+          <h2 class="text-xl font-semibold">5层成熟度</h2>
+          <p class="mt-3 text-slate-600 dark:text-slate-300">工具层、流程层、岗位层、系统层、资产层，用来判断 AI 能力目前在哪。</p>
+        </div>
+        <div class="fade-in rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:border-brand hover:shadow-linear dark:border-slate-800 dark:bg-slate-900">
+          <i class="fa-solid fa-diagram-project mb-5 text-2xl text-brand"></i>
+          <h2 class="text-xl font-semibold">4阶段落地</h2>
+          <p class="mt-3 text-slate-600 dark:text-slate-300">先诊断业务，再写 SOP，然后技术实现，最后评估是否能升级为资产。</p>
+        </div>
+        <div class="fade-in rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:border-brand hover:shadow-linear dark:border-slate-800 dark:bg-slate-900">
+          <i class="fa-solid fa-repeat mb-5 text-2xl text-brand"></i>
+          <h2 class="text-xl font-semibold">内容复利</h2>
+          <p class="mt-3 text-slate-600 dark:text-slate-300">每次内容生产都要回流成素材、反馈、用户痛点和下一轮选题。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="model" class="border-y border-slate-200 bg-slate-50 py-16 dark:border-slate-800 dark:bg-slate-900/45">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="fade-in max-w-3xl">
+          <p class="text-sm font-semibold text-brand">核心框架</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">AI 工作流五层模型</h2>
+          <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">五层模型不是概念装饰，而是诊断工具。它告诉你：现在只是会用工具，还是已经有流程、岗位、系统，甚至形成可复利的资产。</p>
+        </div>
+        <div class="mt-10 grid gap-4 lg:grid-cols-5">
+          <article class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950">
+            <span class="text-sm font-semibold text-brand">01</span>
+            <h3 class="mt-3 text-xl font-semibold">工具层</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">会用 ChatGPT、Claude 或其他工具解决单点任务，但每次都要重新组织。</p>
+          </article>
+          <article class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950">
+            <span class="text-sm font-semibold text-brand">02</span>
+            <h3 class="mt-3 text-xl font-semibold">流程层</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">有固定 SOP、输入输出和模板，结果能复用，但仍需要人全程推进。</p>
+          </article>
+          <article class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950">
+            <span class="text-sm font-semibold text-brand">03</span>
+            <h3 class="mt-3 text-xl font-semibold">岗位层</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">AI 像员工一样承担明确职责，可以独立完成一段完整工作。</p>
+          </article>
+          <article class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950">
+            <span class="text-sm font-semibold text-brand">04</span>
+            <h3 class="mt-3 text-xl font-semibold">系统层</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">多个 AI 岗位协作，有日志、容错、自检、打回和升级机制。</p>
+          </article>
+          <article class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950">
+            <span class="text-sm font-semibold text-brand">05</span>
+            <h3 class="mt-3 text-xl font-semibold">资产层</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">系统持续创造可量化价值，能省时间、降成本、带收入或沉淀能力。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="compound" class="mx-auto max-w-7xl px-5 py-16 sm:px-8">
+      <div class="fade-in max-w-3xl">
+        <p class="text-sm font-semibold text-brand">现场方法论</p>
+        <h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">内容复利工厂</h2>
+        <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">图片素材里最值得沉淀的是“内容复利”逻辑：内容不是拍一条算一条，而是每次产出都增厚下一次增长的原材料。</p>
+      </div>
+      <div class="mt-10 grid gap-5 lg:grid-cols-3">
+        <figure class="fade-in overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-linear dark:border-slate-800 dark:bg-slate-900">
+          <img src="assets/factory-method.jpg" alt="内容复利工厂说明书" class="h-64 w-full object-cover" loading="lazy">
+          <figcaption class="p-5">
+            <h3 class="font-semibold">复利公式</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">内容复利 = 内容生产 + 发布后反馈 + 人设/素材档案增厚。</p>
+          </figcaption>
+        </figure>
+        <figure class="fade-in overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-linear dark:border-slate-800 dark:bg-slate-900">
+          <img src="assets/decision-entry.jpg" alt="双入口决策说明" class="h-64 w-full object-cover" loading="lazy">
+          <figcaption class="p-5">
+            <h3 class="font-semibold">双入口决策</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">用户没有方向时系统推演选题；用户已有方向时系统辅助结构和表达。</p>
+          </figcaption>
+        </figure>
+        <figure class="fade-in overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-linear dark:border-slate-800 dark:bg-slate-900">
+          <img src="assets/skill-router.jpg" alt="Skill 路由表" class="h-64 w-full object-cover" loading="lazy">
+          <figcaption class="p-5">
+            <h3 class="font-semibold">Skill 路由表</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">调度器判断当前步骤，执行 skill 只做一件事，这是系统稳定的关键。</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="skills" class="border-y border-slate-200 bg-slate-50 py-16 dark:border-slate-800 dark:bg-slate-900/45">
+      <div class="mx-auto max-w-7xl px-5 sm:px-8">
+        <div class="fade-in max-w-3xl">
+          <p class="text-sm font-semibold text-brand">系统拆解</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">Skill 搭建地图</h2>
+          <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">不要做一个万能 skill。真正可维护的方式，是把诊断、SOP、生产、审核、回流、复盘拆成多个职责单一的模块。</p>
+        </div>
+        <div class="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <div class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950"><code class="text-sm font-bold text-brand">business-task-diagnosis</code><p class="mt-3 text-sm text-slate-600 dark:text-slate-300">业务任务诊断，选出最值得自动化的靶心任务。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950"><code class="text-sm font-bold text-brand">workflow-sop-builder</code><p class="mt-3 text-sm text-slate-600 dark:text-slate-300">把任务写成目标、输入、输出、步骤、标准和审核机制。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950"><code class="text-sm font-bold text-brand">course-summary-html</code><p class="mt-3 text-sm text-slate-600 dark:text-slate-300">把课程资料整理成 HTML、行动清单和内容素材。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950"><code class="text-sm font-bold text-brand">review-quality-gate</code><p class="mt-3 text-sm text-slate-600 dark:text-slate-300">检查事实、结构、风格、逻辑和业务准确性。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950"><code class="text-sm font-bold text-brand">content-compound-factory</code><p class="mt-3 text-sm text-slate-600 dark:text-slate-300">把内容生产、反馈回流和下一轮选题连起来。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950"><code class="text-sm font-bold text-brand">persona-material-archive</code><p class="mt-3 text-sm text-slate-600 dark:text-slate-300">沉淀你的经历、观点、案例、表达风格和反馈。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950"><code class="text-sm font-bold text-brand">memory-dreaming</code><p class="mt-3 text-sm text-slate-600 dark:text-slate-300">定期去重、合并、抽象、找矛盾、提炼新判断。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-950"><code class="text-sm font-bold text-brand">roi-workflow-review</code><p class="mt-3 text-sm text-slate-600 dark:text-slate-300">评估是否真的省时间、提质量、带线索或收入。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="action" class="mx-auto max-w-7xl px-5 py-16 sm:px-8">
+      <div class="grid gap-10 lg:grid-cols-[.8fr_1.2fr]">
+        <div class="fade-in">
+          <p class="text-sm font-semibold text-brand">落地方案</p>
+          <h2 class="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">先梳理业务，再搭工作流</h2>
+          <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">最小可行路径不是一次做大系统，而是先选一个真实高频任务，把它从流程层推到岗位层。</p>
+        </div>
+        <div class="space-y-4">
+          <div class="fade-in rounded-2xl border border-slate-200 p-5 dark:border-slate-800"><h3 class="font-semibold">1. 列任务</h3><p class="mt-2 text-slate-600 dark:text-slate-300">列出每天、每周、每月、不定期重复做的事，找出高频、耗时、标准可描述的任务。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 p-5 dark:border-slate-800"><h3 class="font-semibold">2. 选靶心</h3><p class="mt-2 text-slate-600 dark:text-slate-300">优先选择“课程内容复利工作流”：资料输入、总结 HTML、行动清单、可发布内容、知识库卡片。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 p-5 dark:border-slate-800"><h3 class="font-semibold">3. 写 SOP</h3><p class="mt-2 text-slate-600 dark:text-slate-300">明确输入来源、输出格式、质量标准、审核节点和不通过处理。</p></div>
+          <div class="fade-in rounded-2xl border border-slate-200 p-5 dark:border-slate-800"><h3 class="font-semibold">4. 跑 3-5 次</h3><p class="mt-2 text-slate-600 dark:text-slate-300">连续达标后再升级岗位分工、日志、回流和 ROI 复盘。</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-slate-50 py-10 dark:border-slate-800 dark:bg-slate-900/60">
+    <div class="mx-auto grid max-w-7xl gap-8 px-5 sm:px-8 md:grid-cols-2">
+      <div>
+        <h2 class="text-xl font-semibold">作者信息</h2>
+        <p class="mt-3 text-slate-600 dark:text-slate-300">作者: 大强同学</p>
+        <p class="mt-2 text-slate-600 dark:text-slate-300">大强同学© 2026 版权所有</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 md:justify-end">
+        <a class="rounded-full border border-slate-200 px-4 py-2 text-sm transition hover:scale-105 hover:border-brand hover:text-brand dark:border-slate-800" href="https://dqtx.cc/" target="_blank" rel="noreferrer"><i class="fa-solid fa-link mr-2"></i>Link</a>
+        <a class="rounded-full border border-slate-200 px-4 py-2 text-sm transition hover:scale-105 hover:border-brand hover:text-brand dark:border-slate-800" href="https://github.com/dqtx760" target="_blank" rel="noreferrer"><i class="fa-brands fa-github mr-2"></i>GitHub</a>
+        <a class="rounded-full border border-slate-200 px-4 py-2 text-sm transition hover:scale-105 hover:border-brand hover:text-brand dark:border-slate-800" href="https://x.com/dqtx760" target="_blank" rel="noreferrer"><i class="fa-brands fa-x-twitter mr-2"></i>twitter</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    function applyTheme(mode) {
+      if (mode === 'dark' || (!mode && prefersDark)) root.classList.add('dark');
+      else root.classList.remove('dark');
+    }
+
+    applyTheme(savedTheme);
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const next = root.classList.contains('dark') ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('is-visible');
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>
