@@ -1,487 +1,1176 @@
 <!DOCTYPE html>
-<html lang="zh-CN" class="scroll-smooth">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>姜胡说3.0学习笔记</title>
-    
-    <!-- TailwindCSS JIT CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: { 50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 800: '#075985', 900: '#0c4a6e', }
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="姜胡说3.0线下学习笔记：从工具使用到系统构建，梳理 AI 工作流、自媒体内容生产与 AI 协作系统。">
+  <title>姜胡说3.0学习笔记</title>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.14.0/dist/mermaid.min.js"></script>
 
-    <style>
-        body { font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; }
-        .gradient-text { background: linear-gradient(135deg, #0ea5e9, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .dark .fa-sun { display: inline-block; } .dark .fa-moon { display: none; }
-        html:not(.dark) .fa-sun { display: none; } html:not(.dark) .fa-moon { display: inline-block; }
-        .glass-card { background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(16px); }
-        .dark .glass-card { background: rgba(31, 41, 55, 0.72); }
-        .hero-orb { background: radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.28), transparent 34%), radial-gradient(circle at 72% 74%, rgba(139, 92, 246, 0.32), transparent 36%), linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(139, 92, 246, 0.2)); }
-        .visual-shot { box-shadow: 0 24px 70px rgba(15, 23, 42, 0.16); }
-        .dark .visual-shot { box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32); }
-        .infographic-img { width: 100%; height: 100%; object-fit: contain; background: #fff7e8; }
-        .dark .infographic-img { background: #111827; }
-    </style>
-    
-    <script>
-        (function() {
-            const theme = localStorage.getItem('theme');
-            if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-            }
-        })();
-    </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5faf4;
+      --ink: #17231d;
+      --muted: #51675b;
+      --hairline: rgba(23, 35, 29, .13);
+      --surface: #ffffff;
+      --surface-2: #edf7ef;
+      --field: #2f6f55;
+      --field-2: #173f35;
+      --accent: #7e9f5f;
+      --accent-2: #b88752;
+      --green: #58a979;
+      --blue: #78aede;
+      --earth: #9b795c;
+      --leaf: rgba(88, 169, 121, .2);
+      --water: rgba(120, 174, 222, .2);
+      --shadow: 0 24px 80px rgba(34, 69, 49, .12);
+    }
+
+    html.dark {
+      color-scheme: dark;
+      --bg: #07110e;
+      --ink: #eff8f1;
+      --muted: #abc1b2;
+      --hairline: rgba(239, 248, 241, .14);
+      --surface: #101b17;
+      --surface-2: #10271f;
+      --field: #6fc08e;
+      --field-2: #13352d;
+      --accent: #accf7d;
+      --accent-2: #d4a56f;
+      --green: #7bd59a;
+      --blue: #8cc4f0;
+      --earth: #c59b74;
+      --leaf: rgba(123, 213, 154, .18);
+      --water: rgba(140, 196, 240, .16);
+      --shadow: 0 24px 90px rgba(0, 0, 0, .34);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 8%, var(--water), transparent 30rem),
+        radial-gradient(circle at 86% 16%, var(--leaf), transparent 34rem),
+        linear-gradient(135deg, rgba(255, 255, 255, .54), rgba(237, 247, 239, .62)),
+        var(--bg);
+      color: var(--ink);
+      font-family: Tahoma, Arial, Roboto, "Droid Sans", "Helvetica Neue", "Droid Sans Fallback", "Heiti SC", "Hiragino Sans GB", Simsun, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      transition: background-color .24s ease, color .24s ease;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body::before {
+      inset: 0;
+      opacity: .38;
+      background-image:
+        linear-gradient(110deg, transparent 0 42%, rgba(47, 111, 85, .055) 42% 43%, transparent 43% 100%),
+        radial-gradient(ellipse at 16% 22%, rgba(120, 174, 222, .18), transparent 22rem),
+        radial-gradient(ellipse at 88% 76%, rgba(184, 135, 82, .13), transparent 24rem);
+      background-size: 180px 180px, auto, auto;
+    }
+
+    body::after {
+      width: 34vw;
+      height: 34vw;
+      min-width: 260px;
+      min-height: 260px;
+      right: -12vw;
+      top: 18vh;
+      border-radius: 47% 53% 61% 39% / 42% 46% 54% 58%;
+      background: radial-gradient(circle at 34% 32%, rgba(120, 174, 222, .2), transparent 58%);
+    }
+
+    html.dark body {
+      background:
+        radial-gradient(circle at 12% 8%, var(--water), transparent 30rem),
+        radial-gradient(circle at 86% 16%, var(--leaf), transparent 34rem),
+        var(--bg);
+    }
+
+    h1, h2, h3, .serif {
+      font-family: "Noto Serif SC", "Songti SC", SimSun, serif;
+      text-wrap: balance;
+    }
+
+    p { text-wrap: pretty; }
+
+    a { color: inherit; }
+
+    .site-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid var(--hairline);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-inner {
+      display: grid;
+      grid-template-columns: minmax(190px, 1fr) auto 54px;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 58% 42% 54% 46% / 46% 58% 42% 54%;
+      color: white;
+      background: var(--field);
+      box-shadow: 0 8px 22px rgba(16, 72, 63, .24);
+      font-size: .82rem;
+    }
+
+    .brand-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      gap: clamp(14px, 2vw, 24px);
+      font-size: .9rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .nav-links a {
+      position: relative;
+      color: var(--muted);
+      transition: color .2s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      bottom: -8px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(120, 174, 222, .28);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform .24s ease;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-action {
+      justify-self: end;
+    }
+
+    .theme-button {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--hairline);
+      border-radius: 58% 42% 50% 50% / 48% 56% 44% 52%;
+      background: var(--surface);
+      color: var(--ink);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .theme-button:hover { transform: translateY(-2px); border-color: var(--accent); }
+    html.dark .theme-button .fa-moon { display: none; }
+    html:not(.dark) .theme-button .fa-sun { display: none; }
+
+    .hero {
+      min-height: calc(100vh - 74px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+      align-items: center;
+      gap: clamp(32px, 6vw, 84px);
+      padding: clamp(48px, 6vw, 78px) 0 clamp(64px, 8vw, 108px);
+      position: relative;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      left: -5vw;
+      top: 12%;
+      width: 132px;
+      height: 132px;
+      border-radius: 56% 44% 68% 32% / 42% 61% 39% 58%;
+      background:
+        radial-gradient(circle at 42% 36%, rgba(255, 255, 255, .34), transparent 18%),
+        linear-gradient(145deg, rgba(88, 169, 121, .26), rgba(120, 174, 222, .12));
+      filter: blur(.2px);
+    }
+
+    .hero-title {
+      font-size: clamp(2.7rem, 5.4vw, 4.8rem);
+      line-height: 1.04;
+      letter-spacing: -.035em;
+      max-width: 14ch;
+    }
+
+    .hero-title span {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .hero-title .solid-accent {
+      display: block;
+      margin-top: .16em;
+      color: var(--field);
+    }
+
+    html.dark .hero-title .solid-accent { color: var(--green); }
+
+    .hero-lede {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 1.6vw, 1.35rem);
+      line-height: 1.9;
+    }
+
+    .hero-panel {
+      position: relative;
+      padding: clamp(22px, 4vw, 40px);
+      border: 1px solid var(--hairline);
+      border-radius: 44px 34px 48px 32px;
+      background:
+        radial-gradient(ellipse at 10% 0%, rgba(120, 174, 222, .18), transparent 36%),
+        linear-gradient(145deg, color-mix(in srgb, var(--surface) 88%, transparent), color-mix(in srgb, var(--surface-2) 84%, transparent));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: -40% -30% auto auto;
+      width: 260px;
+      height: 260px;
+      border-radius: 48% 52% 42% 58% / 52% 38% 62% 48%;
+      background: rgba(88, 169, 121, .18);
+      filter: blur(10px);
+    }
+
+    .panel-title {
+      position: relative;
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      line-height: 1.25;
+    }
+
+    .metric-row {
+      position: relative;
+      display: grid;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .metric-row div {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      border: 1px solid var(--hairline);
+      border-radius: 24px 20px 26px 18px;
+      background: color-mix(in srgb, var(--surface) 78%, transparent);
+    }
+
+    .metric-row b {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 42px;
+      width: 42px;
+      height: 42px;
+      border-radius: 48% 52% 55% 45% / 44% 58% 42% 56%;
+      color: white;
+      background: var(--field);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 18px;
+      border-radius: 999px 999px 999px 24px;
+      border: 1px solid var(--hairline);
+      font-weight: 700;
+      transition: transform .2s ease, background-color .2s ease, color .2s ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--field); color: white; border-color: transparent; }
+    .btn-secondary { background: var(--surface); color: var(--ink); }
+
+    .section {
+      padding: clamp(48px, 6vw, 82px) 0;
+      border-top: 1px solid var(--hairline);
+      position: relative;
+    }
+
+    .section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: max(16px, calc((100% - 1180px) / 2));
+      width: min(220px, 42vw);
+      height: 1px;
+      background: linear-gradient(90deg, var(--green), transparent);
+      opacity: .52;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, .82fr) minmax(260px, .38fr);
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 30px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 3.6vw, 3.6rem);
+      line-height: 1.12;
+      letter-spacing: -.025em;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      line-height: 1.9;
+      max-width: 48ch;
+    }
+
+    .image-frame {
+      overflow: hidden;
+      border: 1px solid var(--hairline);
+      border-radius: 36px 28px 42px 30px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      cursor: zoom-in;
+    }
+
+    .image-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      transition: transform 1.2s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .compact-image img {
+      max-height: 520px;
+      object-fit: contain;
+      background: var(--surface);
+    }
+
+    .compact-image.medium img {
+      max-height: 430px;
+    }
+
+    .compact-image.short img {
+      max-height: 360px;
+    }
+
+    .image-frame:hover img {
+      transform: scale(1.025);
+    }
+
+    .model-image-grid,
+    .action-image-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .image-caption {
+      padding: 16px 20px;
+      border-top: 1px solid var(--hairline);
+      background: var(--surface);
+    }
+
+    .image-caption p { color: var(--muted); line-height: 1.6; }
+
+    .story-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid var(--hairline);
+      border-radius: 36px 28px 42px 30px;
+      background: var(--hairline);
+    }
+
+    .story-strip article {
+      padding: 20px;
+      background: var(--surface);
+      min-height: 178px;
+    }
+
+    .story-strip span {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .story-strip h3 {
+      margin-top: 14px;
+      font-size: 1.35rem;
+      line-height: 1.3;
+    }
+
+    .story-strip p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.75;
+    }
+
+    .media-system {
+      display: grid;
+      grid-template-columns: minmax(280px, .85fr) minmax(0, 1.15fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .field-note {
+      border-radius: 32px;
+      padding: clamp(26px, 4vw, 42px);
+      color: white;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(212, 165, 111, .22), transparent 36%),
+        radial-gradient(circle at 82% 72%, rgba(120, 174, 222, .16), transparent 28%),
+        linear-gradient(145deg, var(--field), var(--field-2));
+      box-shadow: var(--shadow);
+    }
+
+    .field-note p { color: rgba(255, 255, 255, .78); line-height: 1.9; }
+
+    .system-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .system-card {
+      padding: 24px;
+      border: 1px solid var(--hairline);
+      border-radius: 30px 22px 32px 24px;
+      background: var(--surface);
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+
+    .system-card:hover {
+      transform: translateY(-4px);
+      border-color: color-mix(in srgb, var(--accent) 60%, var(--hairline));
+      box-shadow: 0 18px 46px rgba(17, 24, 22, .1);
+    }
+
+    .system-card i { color: var(--accent); font-size: 1.45rem; }
+    .system-card h3 { margin-top: 18px; font-size: 1.45rem; }
+    .system-card p { margin-top: 12px; color: var(--muted); line-height: 1.8; }
+
+    .mermaid-wrap {
+      padding: clamp(18px, 4vw, 30px);
+      border: 1px solid var(--hairline);
+      border-radius: 38px 28px 44px 30px;
+      background:
+        radial-gradient(ellipse at top, rgba(120, 174, 222, .12), transparent 42%),
+        var(--surface);
+      overflow-x: auto;
+      box-shadow: var(--shadow);
+    }
+
+    .media-system + .mermaid-wrap {
+      margin-top: clamp(42px, 5vw, 64px) !important;
+    }
+
+    .mermaid-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .mermaid-title i { color: var(--accent); }
+
+    .mermaid {
+      min-width: 760px;
+    }
+
+    .mermaid svg {
+      display: block;
+      max-width: none !important;
+      min-width: 760px;
+      margin: 0 auto;
+      font-family: "Noto Sans SC", Tahoma, Arial, sans-serif !important;
+      font-size: 15px !important;
+    }
+
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+
+    .skill {
+      min-height: 150px;
+      padding: 20px;
+      border: 1px solid var(--hairline);
+      border-radius: 28px 22px 30px 20px;
+      background: var(--surface);
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+
+    .skill:hover {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--green) 48%, var(--hairline));
+      box-shadow: 0 16px 40px rgba(34, 69, 49, .1);
+    }
+
+    .skill code {
+      display: block;
+      color: var(--field);
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    html.dark .skill code { color: var(--green); }
+    .skill p { margin-top: 12px; color: var(--muted); line-height: 1.7; }
+
+    .action-layout {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 12px;
+      counter-reset: item;
+    }
+
+    .checklist div {
+      counter-increment: item;
+      padding: 18px 18px 18px 64px;
+      position: relative;
+      border: 1px solid var(--hairline);
+      border-radius: 28px 20px 30px 22px;
+      background: var(--surface);
+    }
+
+    .checklist div::before {
+      content: counter(item);
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 52% 48% 58% 42% / 44% 56% 44% 56%;
+      color: white;
+      background: var(--field);
+      font-weight: 800;
+    }
+
+    .checklist p { color: var(--muted); line-height: 1.6; }
+
+    .reading-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+
+    .reading-list article {
+      border-radius: 24px;
+      padding: 22px;
+      border: 1px solid var(--hairline);
+      background: var(--surface);
+    }
+
+    .reading-list p { color: var(--muted); line-height: 1.7; }
+
+    footer {
+      padding: 34px 0;
+      border-top: 1px solid var(--hairline);
+      color: var(--muted);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(18px, 4vw, 48px);
+      background: rgba(7, 17, 14, .82);
+      backdrop-filter: blur(14px);
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: min(100%, 1180px);
+      max-height: 86vh;
+      object-fit: contain;
+      border-radius: 24px;
+      background: white;
+      box-shadow: 0 28px 90px rgba(0, 0, 0, .38);
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .28);
+      border-radius: 999px;
+      color: white;
+      background: rgba(255, 255, 255, .12);
+      transition: transform .2s ease, background-color .2s ease;
+    }
+
+    .lightbox-close:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, .2);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 20px;
+      margin-left: auto;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .7s cubic-bezier(.22, 1, .36, 1), transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes leafSway {
+      0%, 100% { transform: rotate(-2deg) translateY(0); }
+      50% { transform: rotate(3deg) translateY(-4px); }
+    }
+
+    @keyframes waterPulse {
+      0%, 100% { transform: scale(1); opacity: .8; }
+      50% { transform: scale(1.08); opacity: .56; }
+    }
+
+    @keyframes cloudDrift {
+      from { transform: translate3d(0, 0, 0) rotate(0deg); }
+      to { transform: translate3d(-34px, 22px, 0) rotate(8deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .section-head,
+      .media-system,
+      .action-layout {
+        grid-template-columns: 1fr;
+      }
+      .story-strip { grid-template-columns: 1fr 1fr; }
+      .nav-inner {
+        grid-template-columns: minmax(150px, 1fr) minmax(0, auto) 42px;
+        gap: 12px;
+      }
+      .nav-links {
+        justify-self: stretch;
+        overflow-x: auto;
+        gap: 16px;
+        padding: 10px 2px;
+        scrollbar-width: none;
+      }
+      .nav-links::-webkit-scrollbar { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .site-shell { width: min(100% - 24px, 1180px); }
+      .nav-inner {
+        grid-template-columns: minmax(0, 1fr) 42px;
+      }
+      .brand { grid-column: 1 / 2; }
+      .nav-action { grid-column: 2 / 3; grid-row: 1; }
+      .nav-links {
+        grid-column: 1 / 3;
+        grid-row: 2;
+        justify-self: stretch;
+        font-size: .86rem;
+        padding-top: 4px;
+      }
+      .hero-title { font-size: clamp(2.4rem, 12vw, 3.2rem); }
+      .system-grid,
+      .story-strip,
+      .model-image-grid,
+      .action-image-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-panel { border-radius: 28px; }
+      .mermaid { min-width: 680px; }
+      .mermaid svg { min-width: 680px; font-size: 14px !important; }
+      .compact-image img,
+      .compact-image.medium img,
+      .compact-image.short img {
+        max-height: 320px;
+      }
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .footer-links {
+        align-self: flex-end;
+      }
+    }
+  </style>
+
+  <script>
+    (function () {
+      const saved = localStorage.getItem("theme");
+      if (saved !== "light") {
+        document.documentElement.classList.add("dark");
+      }
+    })();
+  </script>
 </head>
 
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-slate-800 text-gray-800 dark:text-gray-200">
-
-    <!-- ====== Header ====== -->
-    <header class="sticky top-0 z-40 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="flex items-center gap-3">
-                <i class="fas fa-layer-group text-2xl text-indigo-500"></i>
-                <span class="text-xl font-bold gradient-text">姜胡说3.0学习笔记</span>
-            </a>
-            <div class="flex items-center gap-4">
-                <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
-                    <a href="https://ai.dqtx.cc/" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-500 transition-colors">大强同学</a>
-                    <a href="#model" class="hover:text-indigo-500 transition-colors">五层模型</a>
-                    <a href="#visuals" class="hover:text-indigo-500 transition-colors">现场图谱</a>
-                    <a href="#speakers" class="hover:text-indigo-500 transition-colors">讲者精华</a>
-                    <a href="#skills" class="hover:text-indigo-500 transition-colors">Skill地图</a>
-                    <a href="#action" class="hover:text-indigo-500 transition-colors">落地方案</a>
-                </nav>
-                <button id="theme-toggle" class="w-10 h-10 flex justify-center items-center rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
-                    <i class="fas fa-sun text-lg"></i>
-                    <i class="fas fa-moon text-lg"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-6">
-        
-        <!-- ====== Hero Section ====== -->
-        <section class="pt-14 pb-10 grid lg:grid-cols-[1.1fr_.9fr] gap-12 items-center">
-            <div class="space-y-7">
-                <h1 class="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-                    从会用工具，到搭建<span class="gradient-text mt-2 block">自己的 AI 系统</span>
-                </h1>
-                <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                    AI 改变的是构建速度，真正决定作品质感的，依然是你的审美、交互判断和产品直觉。把这些经验沉淀进工作流，才会长成可运行、可复利的系统资产。
-                </p>
-                <div class="flex flex-wrap gap-3">
-                    <a href="#action" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-transform hover:-translate-y-1 flex items-center gap-2">
-                        <i class="fas fa-route"></i> 查看落地路线
-                    </a>
-                </div>
-            </div>
-
-            <div class="hero-orb rounded-3xl p-6 shadow-2xl border border-white/60 dark:border-gray-700">
-                <div class="glass-card rounded-2xl p-6 border border-white/70 dark:border-gray-700">
-                    <p class="text-sm font-bold text-indigo-600 dark:text-indigo-300 mb-5 tracking-widest">当天总览</p>
-                    <div class="space-y-5">
-                        <div class="flex items-center gap-4">
-                            <span class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 flex items-center justify-center font-bold">5层</span>
-                            <div><h3 class="font-bold">从工具到资产的 AI 进阶</h3><p class="text-xs text-gray-500">判断标准：单点调用 -> 业务复利</p></div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <span class="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-900/40 text-sky-600 flex items-center justify-center font-bold">3组</span>
-                            <div><h3 class="font-bold">实战方向分组</h3><p class="text-xs text-gray-500">系统搭建、知识管理、赚钱系统</p></div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <span class="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-900/40 text-violet-600 flex items-center justify-center font-bold">1个</span>
-                            <div><h3 class="font-bold">核心落地目标</h3><p class="text-xs text-gray-500">当天搭出一个可工作的 AI 流程</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ====== 现场图谱 ====== -->
-        <section id="visuals" class="py-16 scroll-mt-20">
-            <div class="mb-10">
-                <p class="text-sm font-bold text-indigo-500 uppercase tracking-[0.2em]">Visual Notes</p>
-                <h2 class="text-3xl md:text-4xl font-bold mt-2">把现场内容沉淀成图谱</h2>
-                <p class="mt-4 text-gray-600 dark:text-gray-400 text-lg">这些图片不是装饰，而是这套系统的关键证据：动机、方法、入口、路由、记忆和判断。</p>
-            </div>
-
-            <figure class="visual-shot mb-6 overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <img src="assets/why-learn-ai.png" alt="为什么学 AI 的调研数据图" class="infographic-img max-h-[680px] p-2 sm:p-4" loading="lazy">
-                <figcaption class="p-6">
-                    <h3 class="text-xl font-bold">为什么学 AI：目标已经从“会用”转向“搭系统”</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">调研里超过 80% 的人选择“为了搭建系统”，这正好解释了本页为什么围绕工作流、学习系统和赚钱系统展开。</p>
-                </figcaption>
-            </figure>
-
-            <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6">
-                <figure class="visual-shot overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                    <img src="assets/factory-method.jpg" alt="内容复利工厂方法图" class="h-full min-h-[360px] w-full object-cover" loading="lazy">
-                    <figcaption class="p-6">
-                        <h3 class="text-xl font-bold">内容复利工厂</h3>
-                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">发布后的数据、评论和用户痛点，要回流到人设档案与素材库。</p>
-                    </figcaption>
-                </figure>
-
-                <div class="grid gap-6">
-                    <figure class="visual-shot overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                        <img src="assets/memory-dream.jpg" alt="长期记忆与做梦机制" class="h-48 w-full object-cover" loading="lazy">
-                        <figcaption class="p-5">
-                            <h3 class="font-bold">长期记忆与做梦机制</h3>
-                            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">让 AI 定期去重、找矛盾、抽象经验。</p>
-                        </figcaption>
-                    </figure>
-                    <figure class="visual-shot overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                        <img src="assets/judgement-system.jpg" alt="判断力系统" class="h-48 w-full object-cover" loading="lazy">
-                        <figcaption class="p-5">
-                            <h3 class="font-bold">把判断力放进系统</h3>
-                            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">强模型负责审核、挑错、重构，普通模型负责执行。</p>
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-
-            <div class="mt-6 grid md:grid-cols-2 gap-6">
-                <figure class="visual-shot overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                    <img src="assets/decision-entry.jpg" alt="双入口决策机制" class="h-60 w-full object-cover" loading="lazy">
-                    <figcaption class="p-5">
-                        <h3 class="font-bold">双入口决策</h3>
-                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">没方向时先推选题，有方向时补结构。</p>
-                    </figcaption>
-                </figure>
-                <figure class="visual-shot overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                    <img src="assets/skill-router.jpg" alt="Skill 路由表" class="h-60 w-full object-cover" loading="lazy">
-                    <figcaption class="p-5">
-                        <h3 class="font-bold">Skill 路由表</h3>
-                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">调度器判断步骤，执行器只做一件事。</p>
-                    </figcaption>
-                </figure>
-            </div>
-        </section>
-
-        <!-- ====== 五层模型 ====== -->
-        <section id="model" class="py-16 scroll-mt-20">
-            <div class="mb-10 text-center">
-                <p class="text-sm font-bold text-indigo-500 uppercase tracking-[0.2em]">核心框架</p>
-                <h2 class="text-3xl md:text-4xl font-bold mt-2">AI 工作流五层模型</h2>
-            </div>
-            <div class="grid md:grid-cols-5 gap-4">
-                <!-- Layer 1 -->
-                <div class="bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-indigo-500 transition-all group">
-                    <span class="text-indigo-500 font-bold text-sm">01. 工具层</span>
-                    <h3 class="mt-3 font-bold text-lg group-hover:text-indigo-500 transition-colors">单点调用</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">解决一次性任务，下次还得重新想提示词。产物：提示词清单。</p>
-                </div>
-                <!-- Layer 2 -->
-                <div class="bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-500 transition-all group">
-                    <span class="text-blue-500 font-bold text-sm">02. 流程层</span>
-                    <h3 class="mt-3 font-bold text-lg group-hover:text-blue-500 transition-colors">SOP化</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">把任务拆成固定步骤，下次能复用。产物：Markdown SOP。</p>
-                </div>
-                <!-- Layer 3 -->
-                <div class="bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-amber-500 transition-all group">
-                    <span class="text-amber-500 font-bold text-sm">03. 岗位层</span>
-                    <h3 class="mt-3 font-bold text-lg group-hover:text-amber-500 transition-colors">AI 岗位</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">AI 承担明确职责（执行、审核、统筹）。产物：角色说明书。</p>
-                </div>
-                <!-- Layer 4 -->
-                <div class="bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-rose-500 transition-all group">
-                    <span class="text-rose-500 font-bold text-sm">04. 系统层</span>
-                    <h3 class="mt-3 font-bold text-lg group-hover:text-rose-500 transition-colors">协同闭环</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">多岗位协同，有质检和纠错机制。产物：自检流程、日志。</p>
-                </div>
-                <!-- Layer 5 -->
-                <div class="bg-white/80 dark:bg-gray-800/80 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-emerald-500 transition-all group">
-                    <span class="text-emerald-500 font-bold text-sm">05. 资产层</span>
-                    <h3 class="mt-3 font-bold text-lg group-hover:text-emerald-500 transition-colors">业务资产</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">持续产生复利，实现降本增效。产物：产品、服务、数据。</p>
-                </div>
-            </div>
-            <figure class="visual-shot mt-8 overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <img src="assets/ai-usage-stages.png" alt="AI 使用的五个不同阶段" class="infographic-img max-h-[820px] p-2 sm:p-4" loading="lazy">
-                <figcaption class="p-6">
-                    <h3 class="text-xl font-bold">五层逻辑的可视化版本</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">这张图适合给第一次接触的人看：工具、流程、岗位、系统、资产，每层对应不同的交付目标。</p>
-                </figcaption>
-            </figure>
-        </section>
-
-        <!-- ====== 讲者内容摘要 ====== -->
-        <section id="speakers" class="py-16">
-            <h2 class="text-3xl font-bold mb-10 border-l-4 border-indigo-500 pl-4">讲者内容摘要</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- 胡子哥 -->
-                <div class="glass-card p-8 rounded-3xl border border-gray-200 dark:border-gray-700 space-y-4">
-                    <div class="flex items-center gap-3">
-                        <span class="bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">胡子哥</span>
-                        <h3 class="text-xl font-bold">构建 AI 工作流资产</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                        真正有价值的工作流不是替人许愿，而是先想清楚目标、输入、输出和执行标准。系统内要设置“质量关卡”，普通模型做执行，强模型负责“审核、挑错和重构”。
-                    </p>
-                </div>
-                <!-- 小当张龙 -->
-                <div class="glass-card p-8 rounded-3xl border border-gray-200 dark:border-gray-700 space-y-4">
-                    <div class="flex items-center gap-3">
-                        <span class="bg-violet-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">小当张龙</span>
-                        <h3 class="text-xl font-bold">把判断力蒸馏进 AI</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                        核心是管理“长期记忆”。通过<b>做梦机制</b>（清醒记录碎片 -> 睡眠态去重、找矛盾、提炼判断），让 AI 随着个人的成长而成长，真正理解你的思想演变和成功经验。
-                    </p>
-                </div>
-                <!-- 政委 -->
-                <div class="glass-card p-8 rounded-3xl border border-gray-200 dark:border-gray-700 space-y-4">
-                    <div class="flex items-center gap-3">
-                        <span class="bg-sky-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">政委郭振伟</span>
-                        <h3 class="text-xl font-bold">实体商家的内容闭环</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                        通过“内容复利工厂”模式：发布视频后将播放数据、评论、用户痛点<b>回流</b>到门店人设档案中。让每一次内容生产都成为下一次增长的原材料。
-                    </p>
-                </div>
-                <!-- 李超 -->
-                <div class="glass-card p-8 rounded-3xl border border-gray-200 dark:border-gray-700 space-y-4">
-                    <div class="flex items-center gap-3">
-                        <span class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">主持人李超</span>
-                        <h3 class="text-xl font-bold">从听课到设计冲刺</h3>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                        不仅要看见已有的结果，更要现场练习。采用世界咖啡模式，围绕系统、内容、赚钱或主业放大进行实战，先梳理逻辑，再调用 AI。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ====== Skill 搭建地图 ====== -->
-        <section id="skills" class="py-16">
-            <div class="mb-10">
-                <p class="text-sm font-bold text-indigo-500">系统拆解</p>
-                <h2 class="text-3xl font-bold mt-2">Skill 搭建地图：原子化你的系统</h2>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-3">
-                    <code class="block break-words text-sm font-bold leading-5 text-indigo-600 dark:text-indigo-400">business-task-diagnosis</code>
-                    <p class="text-sm text-gray-500 italic">选出最值得自动化的靶心任务</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-3">
-                    <code class="block break-words text-sm font-bold leading-5 text-indigo-600 dark:text-indigo-400">workflow-sop-builder</code>
-                    <p class="text-sm text-gray-500 italic">将模糊想法写成 AI 可执行的 SOP</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-3">
-                    <code class="block break-words text-sm font-bold leading-5 text-indigo-600 dark:text-indigo-400">course-summary-html</code>
-                    <p class="text-sm text-gray-500 italic">把碎片资料整理成结构化总结页面</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-3">
-                    <code class="block break-words text-sm font-bold leading-5 text-indigo-600 dark:text-indigo-400">review-quality-gate</code>
-                    <p class="text-sm text-gray-500 italic">AI 审计员，不合格的结果禁止输出</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-3">
-                    <code class="block break-words text-sm font-bold leading-5 text-indigo-600 dark:text-indigo-400">content-compound-factory</code>
-                    <p class="text-sm text-gray-500 italic">把单次生产转化为选题与素材库</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-3">
-                    <code class="block break-words text-sm font-bold leading-5 text-indigo-600 dark:text-indigo-400">persona-material-archive</code>
-                    <p class="text-sm text-gray-500 italic">沉淀你自己的表达风格和观点语料</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-3">
-                    <code class="block break-words text-sm font-bold leading-5 text-indigo-600 dark:text-indigo-400">memory-dreaming</code>
-                    <p class="text-sm text-gray-500 italic">定期对知识库进行去重、合并与抽象</p>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-200 dark:border-gray-700 space-y-3">
-                    <code class="block break-words text-sm font-bold leading-5 text-indigo-600 dark:text-indigo-400">roi-workflow-review</code>
-                    <p class="text-sm text-gray-500 italic">评估系统是否真的节省了时间或成本</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ====== 落地执行方案 ====== -->
-        <section id="action" class="py-16 scroll-mt-20">
-            <figure class="visual-shot mb-10 overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <img src="assets/execution-plan.png" alt="先梳理业务再搭工作流的落地执行方案" class="infographic-img max-h-[760px] bg-[#041f1d] p-2 sm:p-4" loading="lazy">
-                <figcaption class="p-6">
-                    <h3 class="text-xl font-bold">落地执行方案：先梳理业务，再搭工作流</h3>
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">这张图作为本区主图，完整承接“诊断、SOP、实现、跃升”和 8 个业务梳理问题。</p>
-                </figcaption>
-            </figure>
-            <div class="grid lg:grid-cols-2 gap-12 items-start">
-                <div>
-                    <h2 class="text-3xl font-bold mb-6">4 阶段落地执行方案</h2>
-                    <div class="space-y-6">
-                        <div class="relative pl-8 border-l-2 border-gray-200 dark:border-gray-700">
-                            <span class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-indigo-500"></span>
-                            <h4 class="font-bold text-lg text-indigo-500">Phase 1 诊断</h4>
-                            <p class="text-sm text-gray-500 mt-2">列出所有任务，选出一个高频、耗时、但标准明确的“靶心任务”。</p>
-                        </div>
-                        <div class="relative pl-8 border-l-2 border-gray-200 dark:border-gray-700">
-                            <span class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-indigo-500"></span>
-                            <h4 class="font-bold text-lg text-indigo-500">Phase 2 SOP</h4>
-                            <p class="text-sm text-gray-500 mt-2">在 Markdown 中写清定义、输入输出、标准。逻辑不清楚不要写提示词。</p>
-                        </div>
-                        <div class="relative pl-8 border-l-2 border-gray-200 dark:border-gray-700">
-                            <span class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-indigo-500"></span>
-                            <h4 class="font-bold text-lg text-indigo-500">Phase 3 实现</h4>
-                            <p class="text-sm text-gray-500 mt-2">真实跑 3-5 次。根据 AI 的表现调整审核节点，直到输出结果连续达标。</p>
-                        </div>
-                        <div class="relative pl-8">
-                            <span class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-indigo-500"></span>
-                            <h4 class="font-bold text-lg text-indigo-500">Phase 4 资产化</h4>
-                            <p class="text-sm text-gray-500 mt-2">加入回流机制。不仅完成任务，还要把结果数据存入知识库。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-200 dark:border-gray-700 shadow-xl">
-                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                        <i class="fas fa-list-check text-indigo-500"></i> 先填这 8 个业务梳理问题
-                    </h3>
-                    <div class="grid gap-4 text-sm">
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border-l-4 border-blue-500"><b>1. 业务目标：</b>这件事最终服务获客还是内部提效？</div>
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border-l-4 border-blue-500"><b>2. 高频任务：</b>哪些任务耗时最长、最必须做？</div>
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border-l-4 border-blue-500"><b>3. 输入来源：</b>来自表格、录音、PDF 还是沟通？</div>
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border-l-4 border-blue-500"><b>4. 输出结果：</b>交给谁？格式是 HTML 还是报告？</div>
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border-l-4 border-blue-500"><b>5. 合格标准：</b>什么样算好？结构准确还是风格一致？</div>
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border-l-4 border-blue-500"><b>6. 审核机制：</b>哪里必须人工干预？哪里可以 AI 审？</div>
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border-l-4 border-blue-500"><b>7. 时间再分配：</b>省下来的时间做什么更高价值的事？</div>
-                        <div class="p-3 bg-gray-50 dark:bg-gray-900 rounded-xl border-l-4 border-blue-500"><b>8. ROI 记录：</b>记录节省的小时数或产生的成交线索。</div>
-                    </div>
-                </div>
-            </div>
-            <figure class="visual-shot mt-10 overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <div class="grid lg:grid-cols-[.55fr_.45fr]">
-                    <img src="assets/automation-5-steps.jpg" alt="AI 自动化五步流程" class="infographic-img max-h-[720px] p-2 sm:p-4" loading="lazy">
-                    <figcaption class="flex flex-col justify-center p-8">
-                        <p class="text-sm font-bold text-indigo-500 uppercase tracking-[0.2em]">Checklist</p>
-                        <h3 class="mt-3 text-2xl font-bold">5 步流程作为执行检查表</h3>
-                        <p class="mt-4 text-sm leading-7 text-gray-600 dark:text-gray-400">它和上方主图有重复，所以不再单独展开一套结构，只作为落地前的核对清单：任务频率、输入输出、标准、审核、省下时间后的再分配。</p>
-                    </figcaption>
-                </div>
-            </figure>
-        </section>
-    </main>
-
-    <!-- ====== Footer ====== -->
-    <footer class="bg-white/50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-800 mt-12">
-        <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-            <div class="text-gray-600 dark:text-gray-400 text-sm">
-                <p>本页面内容基于瓜瓜老师线下学习整理，禁止用于商业用途。</p>
-            </div>
-            
-            <div class="flex items-center gap-6 mt-6 md:mt-0">
-                <!-- 公众号按钮 (提取自参考文件2) -->
-                <button id="wechat-pub-trigger" class="text-gray-500 hover:text-green-500 transition-colors" aria-label="微信公众号">
-                    <i class="fab fa-weixin text-2xl"></i>
-                </button>
-                <!-- GitHub (提取自参考文件2) -->
-                <a href="https://github.com/dqtx760" target="_blank" class="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
-                    <i class="fab fa-github text-2xl"></i>
-                </a>
-                <!-- 赞助/打赏 (提取自参考文件2) -->
-                <button id="donation-btn" class="text-gray-500 hover:text-rose-500 transition-colors" aria-label="支持本项目">
-                    <i class="fas fa-hand-holding-heart text-2xl"></i>
-                </button>
-            </div>
-        </div>
-    </footer>
-
-    <!-- ====== 赞助/捐赠弹窗 (完全复刻参考文件2交互) ====== -->
-    <div id="donation-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-xs p-6 text-center transform transition-all">
-            <h3 class="text-lg font-bold mb-4">感谢支持 🙏</h3>
-            
-            <!-- 支付方式切换 -->
-            <div class="flex border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden mb-5">
-                <button id="wechat-tab" class="flex-1 p-2 text-sm font-bold bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 border-r border-gray-200 dark:border-gray-700">微信</button>
-                <button id="alipay-tab" class="flex-1 p-2 text-sm font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">支付宝</button>
-            </div>
-
-            <!-- 二维码 (图片路径完全提取自参考文件2) -->
-            <div class="p-2 border border-gray-100 dark:border-gray-700 rounded-xl">
-                 <img id="qr-code-img" src="https://gitee.com/da-qiang-classmate/typora/raw/master/image/IMG_4874.webp" alt="WeChat Pay" class="w-48 h-48 mx-auto">
-            </div>
-
-            <button id="close-donation-btn" class="mt-6 w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 py-2 rounded-xl text-sm font-bold">关闭</button>
-        </div>
+<body>
+  <nav class="nav">
+    <div class="site-shell nav-inner">
+      <a href="#top" class="brand">
+        <span class="brand-mark"><i class="fa-solid fa-diagram-project"></i></span>
+        <span class="brand-text">姜胡说3.0学习笔记</span>
+      </a>
+      <div class="nav-links" aria-label="页面导航">
+        <a href="https://ai.dqtx.cc/" target="_blank" rel="noopener noreferrer">大强同学</a>
+        <a href="https://mp.weixin.qq.com/s/5LkcBS6TvwXEGxIMiA-1jQ" target="_blank" rel="noopener noreferrer">Obsidian模板</a>
+        <a href="#model">五层模型</a>
+        <a href="#media-system">内容系统</a>
+        <a href="#skills">Skill地图</a>
+        <a href="#action">落地方案</a>
+      </div>
+      <div class="nav-action">
+        <button id="themeToggle" class="theme-button" type="button" aria-label="切换深色浅色模式">
+          <i class="fa-solid fa-moon"></i>
+          <i class="fa-solid fa-sun"></i>
+        </button>
+      </div>
     </div>
+  </nav>
 
-    <!-- ====== 通用二维码弹窗 (公众号) ====== -->
-    <div id="generic-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-xs p-6 text-center">
-            <h3 class="text-lg font-bold mb-4">微信公众号</h3>
-            <div class="p-2 border border-gray-100 dark:border-gray-700 rounded-xl">
-                 <!-- 公众号图片路径提取自参考文件2 -->
-                 <img src="https://gitee.com/da-qiang-classmate/typora/raw/master/image/687df59c-f85e-4a5f-ab35-cf86112e87fd.webp" alt="WeChat Public" class="w-48 h-48 mx-auto">
-            </div>
-            <p class="text-xs text-gray-500 mt-4 italic">扫码关注「大强同学」，获取最新内容</p>
-            <button id="close-generic-btn" class="mt-6 w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 py-2 rounded-xl text-sm font-bold">关闭</button>
+  <main id="top">
+    <section class="site-shell hero">
+      <div class="reveal">
+        <h1 class="hero-title">
+          <span>从会用工具到搭建</span>
+          <span class="solid-accent">自己的 AI 系统</span>
+        </h1>
+        <p class="hero-lede mt-8">
+          AI 改变的是构建速度，真正决定作品质感的，依然是你的审美、交互判断和产品直觉。把这些经验沉淀进工作流，才会长成可运行、可复利的系统资产。
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#action"><i class="fa-solid fa-route"></i>查看7天落地路线</a>
+          <a class="btn btn-secondary" href="#media-system"><i class="fa-solid fa-pen-nib"></i>看内容系统</a>
         </div>
+      </div>
+
+      <aside class="hero-panel reveal" aria-label="学习总览">
+        <h2 class="panel-title">这不是一份课程总结。它是一张系统施工图。</h2>
+        <div class="metric-row">
+          <div>
+            <b>5</b>
+            <p><strong>五层模型</strong><br><span class="text-sm" style="color: var(--muted)">工具、流程、岗位、系统、资产。</span></p>
+          </div>
+          <div>
+            <b>4</b>
+            <p><strong>落地阶段</strong><br><span class="text-sm" style="color: var(--muted)">诊断、SOP、实现、跃升。</span></p>
+          </div>
+          <div>
+            <b>1</b>
+            <p><strong>本周靶心</strong><br><span class="text-sm" style="color: var(--muted)">把线下学习变成可复用的内容生产系统。</span></p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="model" class="section">
+      <div class="site-shell">
+        <div class="section-head reveal">
+          <div>
+            <h2>五层模型：从自己干，到系统自己运转。</h2>
+          </div>
+          <p>这张定位图用来判断你现在在哪一层。目标不是直接跳到资产层，而是先让一个重复任务稳定跑起来。</p>
+        </div>
+
+        <div class="model-image-grid reveal">
+          <figure class="image-frame compact-image medium">
+            <img src="assets/why-study-ai-survey.png" alt="为什么学 AI 的调研图，显示多数人选择搭建系统" loading="lazy">
+            <figcaption class="image-caption">
+              <h3 class="font-bold text-xl">先看动机：多数人学 AI，是为了搭建系统</h3>
+              <p class="mt-2">真正的差别不是会不会用 AI，而是能不能把 AI 变成自己的工作系统、学习系统和赚钱系统。</p>
+            </figcaption>
+          </figure>
+          <figure class="image-frame compact-image medium">
+            <img src="assets/ai-usage-stages.png" alt="AI 使用的五个不同阶段图" loading="lazy">
+            <figcaption class="image-caption">
+              <h3 class="font-bold text-xl">五层逻辑的手绘版</h3>
+              <p class="mt-2">先看自己在哪一层，再决定下一步升级什么。</p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="story-strip reveal">
+          <article>
+            <span>工具层</span>
+            <h3>用 AI 干活</h3>
+            <p>单点调用，提高一次任务效率。</p>
+          </article>
+          <article>
+            <span>流程层</span>
+            <h3>让 AI 按 SOP 干活</h3>
+            <p>任务有步骤，结果能复用。</p>
+          </article>
+          <article>
+            <span>岗位层</span>
+            <h3>让 AI 成为员工</h3>
+            <p>明确职责，能独立完成一个岗位。</p>
+          </article>
+          <article>
+            <span>系统层</span>
+            <h3>让 AI 团队协同</h3>
+            <p>多岗位协作，有审核和回流。</p>
+          </article>
+          <article>
+            <span>资产层</span>
+            <h3>让系统持续赚钱</h3>
+            <p>经验、数据、反馈沉淀为复利资产。</p>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="media-system" class="section">
+      <div class="site-shell">
+        <div class="section-head reveal">
+          <div>
+            <h2>自媒体内容生产，不靠灵感，靠一条协作管线。</h2>
+          </div>
+          <p>根据新 PDF 内容补充：自媒体不是凭感觉输出，而是有输入、有加工、有输出、有验证、有沉淀的小系统。</p>
+        </div>
+
+        <figure class="image-frame compact-image reveal mb-8">
+          <img src="assets/media-ai-collaboration-system.png" alt="自媒体内容生产与 AI 协作系统构建 11 大核心要点" loading="lazy">
+          <figcaption class="image-caption">
+            <h3 class="font-bold text-xl">11 个核心要点：从方向到系统</h3>
+            <p class="mt-2">这张图把社群方向、自媒体路径、内容生产系统、三层架构和沉淀机制放在一起，适合作为这一节的总览图。</p>
+          </figcaption>
+        </figure>
+
+        <div class="media-system">
+          <aside class="field-note reveal">
+            <h3 class="serif text-3xl font-bold leading-tight">先定方向：不要被赚钱裹挟。</h3>
+            <p class="mt-6">赚钱可以是结果，但不适合一开始作为社群和内容的明面目标。更稳的路径是带大家做事，形成行动力、流量、承接和社群能量，再逐步从自媒体过渡到商业闭环和世界观。</p>
+            <div class="mt-8 text-sm leading-8">
+              <p><strong>当前抓手：</strong>自媒体内容生产</p>
+              <p><strong>中期目标：</strong>流量、承接、产品闭环</p>
+              <p><strong>长期资产：</strong>表达、方法论、世界观</p>
+            </div>
+          </aside>
+
+          <div class="system-grid">
+            <article class="system-card reveal">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <h3>输入端</h3>
+              <p>先找自己的问题，再看别人的问题。素材不是越多越好，而是要能指向一个真实卡点。</p>
+            </article>
+            <article class="system-card reveal">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <h3>加工端</h3>
+              <p>AI 负责框架、拆解和初稿；人负责情绪、审美、真实感和最终判断。</p>
+            </article>
+            <article class="system-card reveal">
+              <i class="fa-solid fa-share-nodes"></i>
+              <h3>输出端</h3>
+              <p>短视频、朋友圈、社群、公众号可以一鱼多吃，但每个渠道的标准不同。</p>
+            </article>
+            <article class="system-card reveal">
+              <i class="fa-solid fa-rotate"></i>
+              <h3>沉淀端</h3>
+              <p>内容发出去才开始验证。没有反馈也是反馈，每次都要留下问题卡和解决方案卡。</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="mermaid-wrap reveal mt-10" aria-label="反馈驱动的内容系统闭环">
+          <div class="mermaid-title">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>反馈驱动的内容系统闭环</span>
+          </div>
+          <div class="mermaid">
+            graph LR
+              A["自己的问题"] --> B["AI 搭框架"]
+              B --> C["人补情绪与判断"]
+              C --> D["多渠道输出"]
+              D --> E["真实反馈"]
+              E --> F["问题卡与方法卡"]
+              F --> A
+              classDef problem fill:#f6eddf,stroke:#b88752,stroke-width:2px,color:#17231d;
+              classDef ai fill:#e7f3fb,stroke:#78aede,stroke-width:2px,color:#17231d;
+              classDef human fill:#f2f7e7,stroke:#7e9f5f,stroke-width:2px,color:#17231d;
+              classDef output fill:#e8f6ec,stroke:#58a979,stroke-width:2px,color:#17231d;
+              classDef feedback fill:#edf6fa,stroke:#78aede,stroke-width:2px,color:#17231d;
+              classDef archive fill:#edf5ed,stroke:#2f6f55,stroke-width:2px,color:#17231d;
+              class A problem;
+              class B ai;
+              class C human;
+              class D output;
+              class E feedback;
+              class F archive;
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="site-shell">
+        <div class="section-head reveal">
+          <div>
+            <h2>Skill 地图：把系统拆成可调用的能力。</h2>
+          </div>
+          <p>不要一上来做万能模块。先让每个 Skill 只承担一个清楚职责，输入、输出和打回规则都要明确。</p>
+        </div>
+
+        <div class="skill-grid">
+          <article class="skill reveal"><code>course-material-digest</code><p>把课程资料、PDF、图片整理成主题摘要。</p></article>
+          <article class="skill reveal"><code>business-task-diagnosis</code><p>选出最值得自动化的靶心任务。</p></article>
+          <article class="skill reveal"><code>workflow-sop-builder</code><p>把模糊想法写成 AI 可执行 SOP。</p></article>
+          <article class="skill reveal"><code>content-angle-selector</code><p>从素材中选出最值得发布的角度。</p></article>
+          <article class="skill reveal"><code>multi-channel-adapter</code><p>把一个观点改写成不同渠道版本。</p></article>
+          <article class="skill reveal"><code>review-quality-gate</code><p>审核事实、结构、风格和是否跑题。</p></article>
+          <article class="skill reveal"><code>feedback-asset-archive</code><p>把反馈沉淀成问题卡、方法卡、素材卡。</p></article>
+          <article class="skill reveal"><code>roi-workflow-review</code><p>复盘系统是否真的节省时间或产生收益。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="action" class="section">
+      <div class="site-shell">
+        <div class="section-head reveal">
+          <div>
+            <h2>未来 7 天，只跑一条最小闭环。</h2>
+          </div>
+          <p>不要同时做多个系统。本周只做：把一次线下学习内容，转成一套可复用的内容生产工作流。</p>
+        </div>
+
+        <div class="action-image-grid reveal">
+          <figure class="image-frame compact-image medium">
+            <img src="assets/execution-plan.png" alt="先梳理业务再搭工作流的执行方案图" loading="lazy">
+            <figcaption class="image-caption">
+              <h3 class="font-bold text-xl">落地执行方案</h3>
+              <p class="mt-2">先诊断，再写 SOP，再实现，最后用 ROI 证明它是不是资产。</p>
+            </figcaption>
+          </figure>
+          <figure class="image-frame compact-image short">
+            <img src="assets/automation-5-steps.jpg" alt="AI 自动化五步流程图" loading="lazy">
+            <figcaption class="image-caption">
+              <h3 class="font-bold text-xl">5 步流程作为执行检查表</h3>
+              <p class="mt-2">任务频率、输入输出、标准、审核、省下时间后的再分配，是每次自动化前都要过一遍的检查项。</p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="action-layout">
+          <div class="checklist reveal">
+            <div><h3 class="font-bold">Day 1 选靶心任务</h3><p>只选一个：线下学习内容复利工作流。</p></div>
+            <div><h3 class="font-bold">Day 2 梳理输入</h3><p>课程资料、图片、PDF、评论、自己的感受。</p></div>
+            <div><h3 class="font-bold">Day 3 定义输出</h3><p>网站、短视频、朋友圈、公众号、知识卡片。</p></div>
+            <div><h3 class="font-bold">Day 4 写 SOP</h3><p>每一步写清输入、输出、合格标准和打回规则。</p></div>
+          </div>
+          <div class="checklist reveal">
+            <div><h3 class="font-bold">Day 5 设计 Skill</h3><p>先设计职责，不急着全部实现。</p></div>
+            <div><h3 class="font-bold">Day 6 跑一次闭环</h3><p>至少产出一条短视频脚本、一条朋友圈和一张知识卡。</p></div>
+            <div><h3 class="font-bold">Day 7 复盘升级</h3><p>只选一个最值得升级的环节，进入下一周。</p></div>
+            <div><h3 class="font-bold">最低合格线</h3><p>写清业务梳理表，跑通一条内容，沉淀一张卡片。</p></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="site-shell">
+        <div class="section-head reveal">
+          <div>
+            <h2>进一步阅读：给系统搭建补底层认知。</h2>
+          </div>
+          <p>这些书不要求马上读完，作为后续搭建工作流、内容系统和知识资产时的参考坐标。</p>
+        </div>
+
+        <div class="reading-list">
+          <article class="reveal"><h3 class="font-bold text-xl">《第二大脑》</h3><p class="mt-3">Tiago Forte。理解如何把资料、项目、领域和归档分层，适合补“沉淀端”。</p></article>
+          <article class="reveal"><h3 class="font-bold text-xl">《系统之美》</h3><p class="mt-3">Donella Meadows。帮助理解反馈回路、延迟和系统杠杆点。</p></article>
+          <article class="reveal"><h3 class="font-bold text-xl">《原子习惯》</h3><p class="mt-3">James Clear。系统大于目标，适合把每日内容生产变成稳定动作。</p></article>
+          <article class="reveal"><h3 class="font-bold text-xl">《精益创业》</h3><p class="mt-3">Eric Ries。用最小闭环验证假设，而不是等完美再发布。</p></article>
+          <article class="reveal"><h3 class="font-bold text-xl">《定位》</h3><p class="mt-3">Ries 与 Trout。补“不要被赚钱裹挟”的表达定位和心智占位。</p></article>
+          <article class="reveal"><h3 class="font-bold text-xl">《纳瓦尔宝典》</h3><p class="mt-3">Eric Jorgenson。理解杠杆、复利和判断力，适合校准个人商业系统。</p></article>
+          <article class="reveal"><h3 class="font-bold text-xl">《创作者经济》</h3><p class="mt-3">李善友等相关创作者研究。补内容、社群、信任和产品承接的连接方式。</p></article>
+          <article class="reveal"><h3 class="font-bold text-xl">《高效能人士的七个习惯》</h3><p class="mt-3">Stephen Covey。把目标、角色和行动顺序拉齐，避免系统跑偏。</p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="site-shell footer-inner">
+      <p>本页面内容基于瓜瓜老师线下学习整理，禁止用于商业用途。</p>
+      <div class="footer-links">
+        <a href="https://dqtx.cc/" target="_blank" rel="noopener noreferrer">blog</a>
+        <a href="https://github.com/dqtx760" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+      </div>
     </div>
+  </footer>
 
-    <!-- ====== JavaScript Logic ====== -->
-    <script>
-        // 主题切换
-        const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-        });
+  <div class="lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-label="图片预览">
+    <button class="lightbox-close" type="button" aria-label="关闭图片预览">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <img alt="">
+  </div>
 
-        // 弹窗逻辑
-        const donationBtn = document.getElementById('donation-btn');
-        const donationModal = document.getElementById('donation-modal');
-        const closeDonationBtn = document.getElementById('close-donation-btn');
-        const wechatTab = document.getElementById('wechat-tab');
-        const alipayTab = document.getElementById('alipay-tab');
-        const qrImg = document.getElementById('qr-code-img');
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.documentElement.classList.contains("dark") ? "dark" : "default",
+      securityLevel: "loose"
+    });
 
-        const wechatPubTrigger = document.getElementById('wechat-pub-trigger');
-        const genericModal = document.getElementById('generic-modal');
-        const closeGenericBtn = document.getElementById('close-generic-btn');
+    const themeToggle = document.getElementById("themeToggle");
+    themeToggle.addEventListener("click", () => {
+      const root = document.documentElement;
+      root.classList.toggle("dark");
+      localStorage.setItem("theme", root.classList.contains("dark") ? "dark" : "light");
+      location.reload();
+    });
 
-        // 控制赞助弹窗
-        donationBtn.onclick = () => donationModal.classList.remove('hidden');
-        closeDonationBtn.onclick = () => donationModal.classList.add('hidden');
-        
-        // 赞助 Tab 切换 (路径提取自 index (8).html)
-        const activeTab = "flex-1 p-2 text-sm font-bold bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 border-r border-gray-200 dark:border-gray-700";
-        const inactiveTab = "flex-1 p-2 text-sm font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors";
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
 
-        wechatTab.onclick = () => {
-            qrImg.src = "https://gitee.com/da-qiang-classmate/typora/raw/master/image/IMG_4874.webp";
-            wechatTab.className = activeTab;
-            alipayTab.className = inactiveTab;
-        };
-        alipayTab.onclick = () => {
-            qrImg.src = "https://gitee.com/da-qiang-classmate/typora/raw/master/image/IMG_4877.webp";
-            alipayTab.className = "flex-1 p-2 text-sm font-bold bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 transition-colors";
-            wechatTab.className = "flex-1 p-2 text-sm font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border-r border-gray-200 dark:border-gray-700";
-        };
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
 
-        // 控制公众号弹窗
-        wechatPubTrigger.onclick = () => genericModal.classList.remove('hidden');
-        closeGenericBtn.onclick = () => genericModal.classList.add('hidden');
+    const lightbox = document.getElementById("imageLightbox");
+    const lightboxImage = lightbox.querySelector("img");
+    const lightboxClose = lightbox.querySelector(".lightbox-close");
 
-        // 点击空白处关闭
-        window.onclick = (e) => {
-            if (e.target === donationModal) donationModal.classList.add('hidden');
-            if (e.target === genericModal) genericModal.classList.add('hidden');
-        };
-    </script>
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.removeAttribute("src");
+      document.body.style.overflow = "";
+    }
+
+    document.querySelectorAll(".image-frame img").forEach((image) => {
+      image.addEventListener("click", () => {
+        lightboxImage.src = image.currentSrc || image.src;
+        lightboxImage.alt = image.alt || "图片预览";
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      });
+    });
+
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && lightbox.classList.contains("open")) {
+        closeLightbox();
+      }
+    });
+  </script>
 </body>
 </html>
